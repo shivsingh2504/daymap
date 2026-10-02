@@ -1,0 +1,200 @@
+# ==========================================
+
+# PYTHON VIRTUAL ENVIRONMENTS
+
+# ==========================================
+
+venv/
+.venv/
+env/
+ENV/
+
+# ==========================================
+
+# PYTHON CACHE
+
+# ==========================================
+
+**pycache**/
+*.py[cod]
+*$py.class
+*.pyo
+
+# ==========================================
+
+# ENVIRONMENT VARIABLES AND SECRETS
+
+# ==========================================
+
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+
+# ==========================================
+
+# IDE AND EDITOR
+
+# ==========================================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ==========================================
+
+# JUPYTER
+
+# ==========================================
+
+.ipynb_checkpoints/
+
+# ==========================================
+
+# MACHINE LEARNING MODELS
+
+# ==========================================
+
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.pt
+*.pth
+*.onnx
+*.model
+*.ubj
+
+# ==========================================
+
+# MACHINE LEARNING EXPERIMENTS
+
+# ==========================================
+
+mlruns/
+mlartifacts/
+optuna.db
+optuna_storage/
+lightgbm_logs/
+xgboost_logs/
+shap_plots/
+tensorboard/
+
+# ==========================================
+
+# GEOSPATIAL AND OSM TEMPORARY FILES
+
+# ==========================================
+
+*.osm.pbf
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.gpkg
+*.gpx
+*.geojson.tmp
+geospatial_cache/
+osmnx_cache/
+routing_cache/
+
+# ==========================================
+
+# DATASET TEMPORARY FILES
+
+# ==========================================
+
+data/raw/
+data/external/
+data/temp/
+data/cache/
+*.parquet.tmp
+*.csv.tmp
+
+# ==========================================
+
+# DATABASES
+
+# ==========================================
+
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# ==========================================
+
+# LOGS AND TEMPORARY FILES
+
+# ==========================================
+
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# ==========================================
+
+# STREAMLIT
+
+# ==========================================
+
+.streamlit/secrets.toml
+
+# ==========================================
+
+# TESTING AND COVERAGE
+
+# ==========================================
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# ==========================================
+
+# CODE FORMATTING
+
+# ==========================================
+
+.mypy_cache/
+.ruff_cache/
+
+# ==========================================
+
+# BUILD AND DISTRIBUTION
+
+# ==========================================
+
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ==========================================
+
+# OPERATING SYSTEM
+
+# ==========================================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==========================================
+
+# BACKUP FILES
+
+# ==========================================
+
+*.bak
+*.old
+*~
