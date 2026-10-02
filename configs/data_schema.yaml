@@ -1,0 +1,142 @@
+schema_version: "1.0"
+dataset: activities
+purpose: Canonical city-independent activity records. Source adapters must map into this contract before model features are built.
+
+conventions:
+  encoding: UTF-8
+  coordinate_reference_system: WGS84
+  latitude_longitude_order: [latitude, longitude]
+  timestamps: ISO-8601 UTC
+  missing_values: null, with the corresponding status field set to unknown where applicable
+  model_input: Do not pass city_id, raw coordinates, source identifiers, or source-specific fields directly as model features.
+
+fields:
+  activity_id:
+    type: string
+    required: true
+    description: Stable identifier within this project; must not depend on row order.
+  city_id:
+    type: string
+    required: true
+    description: Key into configs/cities; used for loading/configuration, not as a model feature.
+  name:
+    type: string
+    required: true
+  category:
+    type: string
+    required: true
+    description: Value from the shared category taxonomy, independent of source labels.
+  source_category:
+    type: string
+    required: false
+    description: Original source category retained for traceability; not a model feature by default.
+  latitude:
+    type: number
+    required: false
+    minimum: -90
+    maximum: 90
+    description: WGS84 latitude. Required only for travel routing; exclude records without valid coordinates from route optimization.
+  longitude:
+    type: number
+    required: false
+    minimum: -180
+    maximum: 180
+    description: WGS84 longitude. Required only for travel routing; exclude records without valid coordinates from route optimization.
+  address:
+    type: string
+    required: false
+  neighborhood:
+    type: string
+    required: false
+    description: Display/filter metadata; do not use as a model feature.
+  price_amount:
+    type: number
+    required: false
+    minimum: 0
+    description: Typical cost estimate in the currency declared by price_currency and for the stated price_basis.
+  price_currency:
+    type: string
+    required: false
+    description: ISO 4217 currency code when known.
+  price_basis:
+    type: string
+    required: false
+    allowed: [per_person, per_two_people, per_item, entry_fee, unknown]
+  price_status:
+    type: string
+    required: true
+    allowed: [observed, estimated, free, unknown]
+    description: free means verified zero cost; unknown must never be interpreted as free.
+  visit_duration_minutes:
+    type: integer
+    required: false
+    minimum: 1
+    description: Typical visit duration, not travel time.
+  duration_status:
+    type: string
+    required: true
+    allowed: [observed, estimated, unknown]
+  rating_value:
+    type: number
+    required: false
+    minimum: 0
+    description: Observed source rating on the documented rating_scale only; never fabricate a value.
+  rating_scale:
+    type: number
+    required: false
+    minimum: 0.1
+    description: Maximum value of the source rating scale.
+  rating_count:
+    type: integer
+    required: false
+    minimum: 0
+    description: Observed number of ratings/reviews; not a rating value.
+  operating_hours:
+    type: object
+    required: false
+    description: Normalized weekly hours when known, preserving closed days and overnight intervals.
+  hours_status:
+    type: string
+    required: true
+    allowed: [observed, unknown]
+    description: Unknown hours remain explicit and must be handled conservatively by itinerary planning.
+  source_name:
+    type: string
+    required: true
+  source_record_id:
+    type: string
+    required: false
+  source_url:
+    type: string
+    required: false
+  source_retrieved_at:
+    type: string
+    required: false
+    format: date-time
+  source_license:
+    type: string
+    required: false
+    description: License/terms identifier or URL recorded during source review.
+  observed_at:
+    type: string
+    required: false
+    format: date-time
+    description: When the source attribute was observed, if known.
+  data_quality_score:
+    type: number
+    required: false
+    minimum: 0
+    maximum: 1
+    description: Derived quality indicator; its calculation must be documented separately.
+
+validation_rules:
+  - activity_id must be unique within each city_id.
+  - city_id must resolve to a city configuration.
+  - category must resolve to the shared taxonomy.
+  - latitude and longitude must either both be null or both be valid numbers.
+  - price_status=free requires price_amount=0; price_status=unknown requires price_amount=null.
+  - price_status=estimated requires a non-null amount and must not be represented as observed.
+  - duration_status=unknown requires visit_duration_minutes=null.
+  - rating_value must be null when no observed rating exists; rating_scale must be present when rating_value is present.
+  - missing coordinates prevent routing but do not invalidate the activity for non-route recommendations.
+  - source provenance must not be used as a preference feature.
